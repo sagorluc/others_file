@@ -83,7 +83,8 @@ def main():
                 print(e)
                 speak('sorry sagar i am not able to send this email')
 
-
+        elif 'break' in take_query:
+            break
         
 
 

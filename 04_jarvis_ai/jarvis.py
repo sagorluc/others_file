@@ -13,10 +13,12 @@ engine.setProperty('voice', voices[1].id) # set female voice
 #engine.setProperty('voice', voices[0].id) # set male voice
 #print(male_voice)
 
+# voice speak
 def speak(audio):
     engine.say(audio)
     engine.runAndWait()
 
+# wish me with the current time 
 def wishme():
     houre = int(datetime.now().hour)
     
@@ -31,19 +33,20 @@ def wishme():
 
     speak('hei!i am jarvis ai developer sagar ahmed here.how may i help you')
 
+# takeing all voice command
 def takecommand():
     # it takes microphone speech and return the string output
     
-    r = sr.Recognizer()
+    r = sr.Recognizer() # Recognize the voice command
 
-    with sr.Microphone() as source:
+    with sr.Microphone() as source: # listen all voice command
         print('Listening...')
         r.pause_threshold = 1
         audio = r.listen(source)
 
     try:
         print('Recognizing...')
-        query = r.recognize_google(audio, language="en-in")
+        query = r.recognize_google(audio, language="en-us")
         print(f'he/she said: {query}\n')
 
     except Exception as ex:
@@ -52,6 +55,8 @@ def takecommand():
         return 'None'
     return query
 
+# send email to other person by voice command
+# TODO: less secure apps in gmail (set in gmail)
 def send_email(to, content):
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.ehlo() # build in function of smtplib
