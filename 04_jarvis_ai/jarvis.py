@@ -1,10 +1,10 @@
 import pyttsx3 # this module for voices
-import speech_recognition as sr
-import wikipedia
-import webbrowser
-import os
-import smtplib
-from datetime import datetime, date
+import speech_recognition as sr # this module for voice command
+import wikipedia # this module for wikipedia story
+import webbrowser # this is for open website browser
+import os # this is for play any kind of music
+import smtplib # this is for send email, gmail
+from datetime import datetime, date # this is for date time set 
 
 engine = pyttsx3.init('sapi5')
 voices = engine.getProperty('voices') # tow voice here male and female
