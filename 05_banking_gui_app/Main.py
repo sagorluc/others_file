@@ -1,7 +1,7 @@
-from Bank import *
+from Registration_form import *
 
 def main():
-    pass
+    master.mainloop()
 
 if __name__ == '__main__':
     main()

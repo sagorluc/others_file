@@ -6,6 +6,7 @@ from PIL import ImageTk, Image
 master = Tk()
 master.title('Banking app')
 
+#=========================START REGISTRATION AREA=================
 def finish_register():
     name = temp_name.get()
     age = temp_age.get()
@@ -30,6 +31,7 @@ def finish_register():
             new_file.write(password+'\n')
             new_file.write(age+'\n')
             new_file.write(gender+'\n')
+            new_file.wirte('0') # remove the empty string
             new_file.close()
             notif.config(fg='green', text='Account has been successfully') 
     
@@ -69,9 +71,13 @@ def register():
     
     Button(register_screen, text='Register', command= finish_register, font=('calibri,12')).grid(row=5, sticky=N, pady=10)
 
+#======================START LOGIN AREA============================ 
 def login():
-    print('This is a login page')
+    print('this is the login page')
+    
 
+#======================IMPORTING AREA================================  
+    
 # import image
 img = Image.open('img_box.png')
 resize_img = img.resize((150,150))
@@ -84,7 +90,7 @@ Label(master, image=photo_img).grid(row=2, sticky=N, pady= 15)
 
 
 # Button
-Button(master, text='Registration', font=('calibri,12'), width=20, command=register()).grid(row=3, sticky=N)
-Button(master, text='Login', font=('calibri,12'), width=20, command=login()).grid(row=4, sticky=N, pady=10)
+Button(master, text='Registration', font=('calibri,12'), width=20, command=register).grid(row=3, sticky=N)
+Button(master, text='Login', font=('calibri,12'), width=20, command=login).grid(row=4, sticky=N, pady=10)
 
-master.mainloop()
+#master.mainloop()
