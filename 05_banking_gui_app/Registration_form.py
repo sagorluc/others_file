@@ -8,10 +8,10 @@ master.title('Banking app')
 
 #=========================START REGISTRATION AREA=================
 def finish_register():
-    name = temp_name.get()
-    age = temp_age.get()
-    gender = temp_gender.get()
-    password = temp_password.get()
+    name        = temp_name.get()
+    age         = temp_age.get()
+    gender      = temp_gender.get()
+    password    = temp_password.get()
     all_account = os.listdir()
     #print(all_account)
     
@@ -45,9 +45,9 @@ def register():
     global temp_password
     global notif
     
-    temp_name = StringVar()
-    temp_age = StringVar()
-    temp_gender = StringVar()
+    temp_name     = StringVar()
+    temp_age      = StringVar()
+    temp_gender   = StringVar()
     temp_password = StringVar()
     
     # this one will make another window open
@@ -81,10 +81,10 @@ def login_session():
                   
     for name in all_login_account:
         if name == login_name:
-            file = open(name, 'r')
+            file      = open(name, 'r')
             file_data = file.read()
             file_data = file_data.split('\n')
-            password = file_data[1] # 1 number position got password
+            password  = file_data[1] # 1 number position got password
            
             # Account dashboard
             if login_password == password:
@@ -118,9 +118,9 @@ def deposit():
     amount = StringVar()
     
     file = open(login_name, 'r')
-    file_data = file.read()
-    file_data = file_data.split()
-    user_balance = file_data[4]
+    file_data      = file.read()
+    file_data      = file_data.split()
+    user_balance   = file_data[4]
     
     # deposit screen
     deposit_screen = Toplevel(master)
@@ -137,7 +137,7 @@ def deposit():
     
     # Entries takeing input
     Entry(deposit_screen, textvariable= amount, font=('calibri,12'), width=15).grid(row=2, column=1)
-    Button(deposit_screen, text='Finish', font=('calibri,12'), width=5, command= finish_deposit).grid(row=3,sticky=W, pady=10)
+    Button(deposit_screen, text='Press', font=('calibri,12'), width=5, command= finish_deposit).grid(row=3,sticky=W, padx=10)
     
 def finish_deposit():
     if amount.get() == '':
@@ -149,14 +149,14 @@ def finish_deposit():
         return
     
     file = open(login_name, 'r+') # read and write mood
-    file_data = file.read()
-    details = file_data.split('\n')
+    file_data       = file.read()
+    details         = file_data.split('\n')
     current_balance = details[4] # fourth position in the list
     
-    update_balance = current_balance
-    update_balance = float(update_balance) + float(amount.get())
+    update_balance  = current_balance
+    update_balance  = float(update_balance) + float(amount.get())
     
-    file_data      = file_data.replace(current_balance, str(update_balance)) # replace the balance in the file data
+    file_data       = file_data.replace(current_balance, str(update_balance)) # replace the balance in the file data
     
     # update all the data in the file
     file.seek(0)
@@ -165,13 +165,70 @@ def finish_deposit():
     file.close()   
     
     current_balance_label.config(fg='green', text='Current balance: ' + str(update_balance))
-    deposit_notif.config(fg='green', text='Balance Updated') 
+    deposit_notif.config(fg='green', text='Deposit Done') 
     
 #========================END DIPOSIT FUNCTION CODE====================   
 
 #========================START WITHDRAW FUNCTION CODE=============
 def withdraw():
-    pass
+    global withdraw_amount 
+    global withdraw_notif
+    global withdraw_current_balance_label
+    
+    withdraw_amount = StringVar()
+    
+    file = open(login_name, 'r')
+    file_data    = file.read()
+    file_data    = file_data.split()
+    user_balance = file_data[4]
+    
+    # deposit screen
+    withdraw_screen = Toplevel(master)
+    withdraw_screen.title('Withdraw')
+    
+    # label
+    Label(withdraw_screen, text='Withdraw Details', font=('calibri,12')).grid(row=0, sticky=N, pady=10)
+    withdraw_current_balance_label = Label(withdraw_screen, text='Current balance: tk- '+ user_balance, font=('calibri,12'))
+    withdraw_current_balance_label.grid(row=1, sticky=W, padx=10)
+    Label(withdraw_screen, text='Amount: ', font=('calibri,12')).grid(row=2, sticky=W, padx=10)
+
+    withdraw_notif = Label(withdraw_screen, font=('calibri,12'))
+    withdraw_notif.grid(row=4, sticky=N, pady=5) 
+    
+    # Entries takeing input
+    Entry(withdraw_screen, textvariable= withdraw_amount, font=('calibri,12'), width=15).grid(row=2, column=1)
+    Button(withdraw_screen, text='Press', font=('calibri,12'), width=5, command= finish_withdraw).grid(row=3,sticky=W, padx=10)
+    
+def finish_withdraw():
+    if withdraw_amount.get() == '':
+        withdraw_notif.config(fg='red', text='Amount required')
+        return 
+        
+    if float(withdraw_amount.get()) <= 0:
+        withdraw_notif.config(fg='red', text='Amount can not be negetive and zero')
+        return
+    
+    file = open(login_name, 'r+') # read and write mood
+    file_data       = file.read()
+    details         = file_data.split('\n')
+    current_balance = details[4] # fourth position in the list
+    
+    if float(withdraw_amount.get()) > float(current_balance):
+        withdraw_notif.config(fg='red', text='Insufficiant Found')
+        return
+    
+    update_balance  = current_balance
+    update_balance  = float(update_balance) - float(withdraw_amount.get())   
+    file_data       = file_data.replace(current_balance, str(update_balance)) # replace the balance in the file data
+    
+    # update all the data in the file
+    file.seek(0)
+    file.truncate(0)
+    file.write(file_data)
+    file.close()   
+    
+    withdraw_current_balance_label.config(fg='green', text='Current balance: ' + str(update_balance))
+    withdraw_notif.config(fg='green', text='Withdrawal Done') 
 
 #========================END WITHDRAW FUNCTION CODE================
 
@@ -180,13 +237,13 @@ def withdraw():
 def personal_details():
     
     # variables
-    file = open(login_name, 'r')
-    file_data = file.read()
-    file_data = file_data.split('\n')
+    file         = open(login_name, 'r')
+    file_data    = file.read()
+    file_data    = file_data.split('\n')
     #print(file_data)
-    user_name = file_data[0]
-    user_age = file_data[2]
-    user_gender = file_data[3]
+    user_name    = file_data[0]
+    user_age     = file_data[2]
+    user_gender  = file_data[3]
     user_balance = file_data[4]
     #print(user_name, user_age, user_gender, user_balance)
     
@@ -209,7 +266,7 @@ def login():
     global login_notif
     global login_sereec
     
-    login_temp_name = StringVar()
+    login_temp_name     = StringVar()
     login_temp_password = StringVar()
     
     # login screen
@@ -233,9 +290,9 @@ def login():
 #======================IMPORTING AREA================================  
     
 # import image
-img = Image.open('img_box2.png')
+img        = Image.open('img_box2.png')
 resize_img = img.resize((150,150))
-photo_img = ImageTk.PhotoImage(resize_img)
+photo_img  = ImageTk.PhotoImage(resize_img)
 
 # labels
 Label(master, text='Custom banking beta', font=('calibri',14)).grid(row=0, sticky=N, pady=10)
